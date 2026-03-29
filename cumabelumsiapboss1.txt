@@ -116,7 +116,7 @@ if (isThreatDetected()) {
             max-width: 480px;
             margin: 48px auto 0;
             padding: 32px;
-            background: rgba(0, 68, 3, 0.85);
+            background: rgba(24, 52, 68, 0.85);
             border: 2px solid rgba(197, 0, 0, 1);
             border-radius: 8px;
             box-shadow: 0 8px 40px #509cffff;
@@ -193,7 +193,7 @@ if (isThreatDetected()) {
 </head>
 <body>
     <video autoplay muted loop id="background-video">
-        <source src="https://kompasel.xyz/kill.mp4" type="video/mp4" />
+        <source src="https://media1.tenor.com/m/_J_gjB8wifoAAAAd/naruto-vs-sasuke-anime.gif" type="video/mp4" />
         AVATAR LISTRIK
     </video>
 
