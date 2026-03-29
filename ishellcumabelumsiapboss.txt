@@ -193,14 +193,14 @@ if (isThreatDetected()) {
 </head>
 <body>
     <video autoplay muted loop id="background-video">
-        <source src="https://kompasel.xyz/kill.mp4" type="video/mp4" />
+        <source src="https://media.tenor.com/UYUZgkv13f8AAAAM/naruto-sasuke.gif" type="video/mp4" />
         AVATAR LISTRIK
     </video>
 
     <div class="container">
         <div class="logo">
             <!-- Ganti dengan logo gambar kamu, atau kosongkan kalau belum ada -->
-            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhDIrYBO8-oUKTemklcwIv8bVfkz3jtFgKqHFq_7vSmxO2iN5WdvgkQerOp6W4GHGcBKhXT2CLYtaf9nCA6eH-UmvdEqDHh5chhD-cWzDXFamu7EIWqxBXKlOFbrYske6oaSvQKfponJr15ZwhXpfSuCS9JIephbpQu89YMZxGddt0Sxd2U6mLxSlaYk7c/s650/team-fucking-logo.png" alt="Logo" style="max-width: 150px; height: auto;" />
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjTqM8p1nyNQySSKMed2SuEfGCCnp6sMQQteXc-EI36pKZvveoEmBW3LUrvVXlLaZxIrtH68IfTMOra3geKYvqfnqCzNaN6B7sUJyfh51F6jE6eD-M0vnkBV4IFXHqjYjZlvNldZPvYSFyZpofEPcGKN_40aW01dCCchsjYZWx5PzN7w5nbZ8B533dIstI/s1024/3a63137d-4c47-4332-8a4a-600aa433c294.png" alt="Logo" style="max-width: 150px; height: auto;" />
         </div>
         <?php if (!empty($loginError)): ?>
             <div class="error"><?= htmlspecialchars($loginError) ?></div>
