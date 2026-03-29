@@ -364,7 +364,7 @@ function render_login($err=''){
       min-height:100vh;
       background:
         linear-gradient(rgba(11,18,32,.35), rgba(11,18,32,.35)),
-        url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjWJgbMkgqxYzK_rOoqLZ-o6Nh28k0C0ZdcRJQzSRf_WWfT9rGxP-8_Q5eDw-sMDV4Rf77lUwwzmPKw9Xr8lo0DTaa1fXsdq6Kif3otX-eFOjOMKgkEtnY9QuSEhwseJ7zaAUJwGVKxFjHJHw2jACHtSXp3_HQuOCyML3gzbNGVw9GvWzyvkPgeM5wUm6s/s580/giphy.gif") center/cover no-repeat;
+        url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhGqGtXsADf0iaJsNIpvH-8jwd5kWlnUWMDDq-rNexwEbWdHOTItac1kQpkGPPYx5EHuhRmhEjOgbosUeUroLkrXS7oqKJ9fXOQnoZzycawFGk6UwpOQ2X1Yl-rtEQYozndm9hczznPn4dZ488RqG08em7mW8wS_fqmrU0GMHiF3MfjWl38kekiBBx3DTk/s220/blue-drip.gif") center/cover no-repeat;
       display:flex;
       align-items:center;
       justify-content:center;
