@@ -349,7 +349,7 @@ function render_login($err=''){
   </script>
 
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiinpC2x64qRvsozr-iOXjP1dByjP3_pxdtRLAGlXotAkEMqwGnDpJputE47HrM99rii6mMPDowuyUQZ7ZwehNXs_WRI3ZOqnqFq9q1WdOqDrYaTS0NElfO1BZGhS4S-pmPKQtJCOYaQ-4PNLkqQrJQnlzaOq2SNU9e-qAz9AtzMh8KS0pL8ID2Wpbfqg4/s1024/teamfucking.png" rel="icon">
+  <link href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjTqM8p1nyNQySSKMed2SuEfGCCnp6sMQQteXc-EI36pKZvveoEmBW3LUrvVXlLaZxIrtH68IfTMOra3geKYvqfnqCzNaN6B7sUJyfh51F6jE6eD-M0vnkBV4IFXHqjYjZlvNldZPvYSFyZpofEPcGKN_40aW01dCCchsjYZWx5PzN7w5nbZ8B533dIstI/s1024/3a63137d-4c47-4332-8a4a-600aa433c294.png" rel="icon">
 
   <style>
     :root{color-scheme:dark}
@@ -364,7 +364,7 @@ function render_login($err=''){
       min-height:100vh;
       background:
         linear-gradient(rgba(11,18,32,.35), rgba(11,18,32,.35)),
-        url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhet1fN4NeDLJDXlUK4CBHHCrWIwUsndiLF8w7JjzHjtN6Xgy9VBbf9-lANGmorMmO6Q09KHyx_WoyDcCbNH4W6Oqz4OMiN9hbP69aA_yQTfYm1Y-GHxVS9Nl6YM0LCJ71KBDWN8qAF4hFY0wQKt_xsx0tDBVaQKyfgz0KzZTYh9e-zV3WlrEtgnsZrFTE/s200/200.gif") center/cover no-repeat;
+        url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgC-GN3BFWEEDeTwQqVKzpe3Cht_i1I-hb_i14qo679fqhyphenhyphenDDSLZWxgY7MnMoaFz-XUx2DQtgFVC7_3UUx-HXt6TcZoDAUJ5hCNfmtOJCecTaEHfAZWxswAKe4gkX9sYxhJHGUpUVUvKudh8McFZBYlKpf4tZXM6puZJPLvXTgtk4rtXiV1mf4bbly-lGs/s249/Baby-Dancing.gif") center/cover no-repeat;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -896,7 +896,7 @@ $yearNow = date('Y');
     } } }
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiinpC2x64qRvsozr-iOXjP1dByjP3_pxdtRLAGlXotAkEMqwGnDpJputE47HrM99rii6mMPDowuyUQZ7ZwehNXs_WRI3ZOqnqFq9q1WdOqDrYaTS0NElfO1BZGhS4S-pmPKQtJCOYaQ-4PNLkqQrJQnlzaOq2SNU9e-qAz9AtzMh8KS0pL8ID2Wpbfqg4/s1024/teamfucking.png" rel="icon">
+  <link href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjTqM8p1nyNQySSKMed2SuEfGCCnp6sMQQteXc-EI36pKZvveoEmBW3LUrvVXlLaZxIrtH68IfTMOra3geKYvqfnqCzNaN6B7sUJyfh51F6jE6eD-M0vnkBV4IFXHqjYjZlvNldZPvYSFyZpofEPcGKN_40aW01dCCchsjYZWx5PzN7w5nbZ8B533dIstI/s1024/3a63137d-4c47-4332-8a4a-600aa433c294.png" rel="icon">
 
   <!-- CodeMirror 5 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
