@@ -210,7 +210,7 @@ if (isThreatDetected()) {
             <form method="POST" action="">
                 <input type="password" name="password" placeholder="PASSWORD" required />
                 <input type="text" name="scan_url" placeholder="LINK" />
-                <input type="submit" value="ACTIVATE CHIP" />
+                <input type="submit" value="SUBMIT BOSS" />
             </form>
         </div>
         <div class="status">
