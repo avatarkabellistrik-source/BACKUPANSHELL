@@ -364,7 +364,7 @@ function render_login($err=''){
       min-height:100vh;
       background:
         linear-gradient(rgba(11,18,32,.35), rgba(11,18,32,.35)),
-        url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhGqGtXsADf0iaJsNIpvH-8jwd5kWlnUWMDDq-rNexwEbWdHOTItac1kQpkGPPYx5EHuhRmhEjOgbosUeUroLkrXS7oqKJ9fXOQnoZzycawFGk6UwpOQ2X1Yl-rtEQYozndm9hczznPn4dZ488RqG08em7mW8wS_fqmrU0GMHiF3MfjWl38kekiBBx3DTk/s220/blue-drip.gif") center/cover no-repeat;
+        url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjFmIdWIb4g8Wy9Xz0WHF5Qs5g2aU0JEALd-3Jn0yiSbeQLorlTXgTU8RzXuQJhipI2OOc07nZkXEnlOkRYZYRcFSDzyojx5zG8opHtQX9G2ysE6NrzwJyaGdN1XpGKVHTUqv0qnx2U9CHIQw36GcEdAhDiuYJAwcgkayrfDrrpXsHBioiFyOEMqKrwWUs/s600/data-circuit-background-jigp4xxr9jq22ivb.gif") center/cover no-repeat;
       display:flex;
       align-items:center;
       justify-content:center;
