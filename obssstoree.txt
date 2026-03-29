@@ -364,7 +364,7 @@ function render_login($err=''){
       min-height:100vh;
       background:
         linear-gradient(rgba(11,18,32,.35), rgba(11,18,32,.35)),
-        url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjUEFPPJcSmGCBy_zFIE9_1N4HfZ8B-qmSel4TUNqmYNWPhC2jHKV9a_9mDRfdK3lL_dSO67R_wkHFgnPivs0UkcP8GJdk5j8EMkZS9dd01PjXRRnVYH0jZUNAvRsbPAYTiy1Nn386E3BzHEMEQ6jACByjN5su82pLbGdROmtY5roWCTfo_8BQTGtU8It8/s320/popular-gif.gif") center/cover no-repeat;
+        url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhet1fN4NeDLJDXlUK4CBHHCrWIwUsndiLF8w7JjzHjtN6Xgy9VBbf9-lANGmorMmO6Q09KHyx_WoyDcCbNH4W6Oqz4OMiN9hbP69aA_yQTfYm1Y-GHxVS9Nl6YM0LCJ71KBDWN8qAF4hFY0wQKt_xsx0tDBVaQKyfgz0KzZTYh9e-zV3WlrEtgnsZrFTE/s200/200.gif") center/cover no-repeat;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -423,7 +423,7 @@ function render_login($err=''){
 <body class="shell text-slate-100">
   <div class="w-full max-w-md card p-6">
     <div class="mb-5 flex items-center justify-between">
-      <div class="text-xl font-bold tracking-tight title">AUTH BYPASS</div>
+      <div class="text-xl font-bold tracking-tight title">DI JILAT BARU DI CELUPIN</div>
       <span class="text-xs text-slate-400">PHP <?php echo h(PHP_VERSION); ?></span>
     </div>
 
@@ -436,17 +436,17 @@ function render_login($err=''){
     <form method="post" action="?a=login" class="space-y-3">
       <input type="hidden" name="csrf" value="<?php echo h($csrf); ?>">
       <div>
-        <label class="text-sm text-slate-300">Operator ID</label>
+        <label class="text-sm text-slate-300">KOLOM INI USER </label>
         <input class="field mt-1" name="user" type="text" autocomplete="username" required>
       </div>
       <div>
-        <label class="text-sm text-slate-300">Cipher Key</label>
+        <label class="text-sm text-slate-300">KOLOM INI PASS </label>
         <input class="field mt-1" name="pass" type="password" autocomplete="current-password" required>
       </div>
-      <button class="btn w-full" type="submit">ACCESS SYSTEM</button>
+      <button class="btn w-full" type="submit">JANGAN DI SUBMIT NANTI KE SETRUM</button>
     </form>
 
-    <p class="text-[12px] text-slate-400 mt-4 text-center">© Core Developed By AVATAR KIPAS ANGIN</p>
+    <p class="text-[12px] text-slate-400 mt-4 text-center"># AVATAR KIPAS ANGIN</p>
       </div>
     </body></html><?php
 }
