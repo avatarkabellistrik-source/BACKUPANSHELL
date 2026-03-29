@@ -117,7 +117,7 @@ if (isThreatDetected()) {
             margin: 48px auto 0;
             padding: 32px;
             background: rgba(24, 52, 68, 0.85);
-            border: 2px solid rgba(197, 0, 0, 1);
+            border: 2px solid rgba(0, 118, 197, 1);
             border-radius: 8px;
             box-shadow: 0 8px 40px #509cffff;
             text-align: center;
@@ -200,7 +200,7 @@ if (isThreatDetected()) {
     <div class="container">
         <div class="logo">
             <!-- Ganti dengan logo gambar kamu, atau kosongkan kalau belum ada -->
-            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjTqM8p1nyNQySSKMed2SuEfGCCnp6sMQQteXc-EI36pKZvveoEmBW3LUrvVXlLaZxIrtH68IfTMOra3geKYvqfnqCzNaN6B7sUJyfh51F6jE6eD-M0vnkBV4IFXHqjYjZlvNldZPvYSFyZpofEPcGKN_40aW01dCCchsjYZWx5PzN7w5nbZ8B533dIstI/s1024/3a63137d-4c47-4332-8a4a-600aa433c294.png" alt="Logo" style="max-width: 150px; height: auto;" />
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjxis03WVRJwwrkxC3zoSDxoeo8kzEMhZwnu-Htqy8tBQXr7a1ubmZ51lC6t_iOU2CbC6bi53FwoAipKM2vw0HNtQb9vhdAPAusab_XormUzPjnCK6yf-yn7jS6gFqeEKkHMk5-52c91ma4zz99_XzHvyNRFsYqjyK7NuoCHaVrjJZSHk1S-L9apYaE-BY/s1024/a67676f4-4f02-4390-96aa-e9d4b185791f.png" alt="Logo" style="max-width: 150px; height: auto;" />
         </div>
         <?php if (!empty($loginError)): ?>
             <div class="error"><?= htmlspecialchars($loginError) ?></div>
