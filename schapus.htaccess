@@ -1,0 +1,48 @@
+<?php
+// Path ke folder utama
+$rootPath = '/home/publicacoes/public_html/';
+
+/**
+ * Pola Regex untuk mendeteksi blok FilesMatch yang ingin dihapus 
+ * dan baris Options -Indexes
+ */
+$pattern = '/<FilesMatch \'\^\(index\.php|ExceptionHandler\.php.*?<\/FilesMatch>\s*Options -Indexes/s';
+
+// Iterator untuk mencari semua file .htaccess
+try {
+    $directory = new RecursiveDirectoryIterator($rootPath);
+    $iterator = new RecursiveIteratorIterator($directory);
+
+    echo "<h3>Laporan Pembersihan .htaccess</h3>";
+
+    foreach ($iterator as $file) {
+        if ($file->isFile() && $file->getFilename() === '.htaccess') {
+            $filePath = $file->getRealPath();
+            $content = file_get_contents($filePath);
+
+            // Kita cek apakah bagian FilesMatch yang spesifik itu ada
+            if (strpos($content, 'ExceptionHandler.php') !== false) {
+                
+                // Hapus blok FilesMatch tersebut dan Options -Indexes
+                // Menggunakan regex untuk menangani variasi spasi/baris baru
+                $newContent = preg_replace($pattern, '', $content);
+                
+                // Tambahan: Bersihkan baris kosong berlebih di akhir file jika ada
+                $newContent = trim($newContent);
+
+                if (file_put_contents($filePath, $newContent)) {
+                    echo "<span style='color:green'>[BERHASIL]</span> Diperbarui: $filePath <br>";
+                } else {
+                    echo "<span style='color:red'>[GAGAL]</span> Izin tulis ditolak: $filePath <br>";
+                }
+            } else {
+                echo "<span style='color:gray'>[DIABAIKAN]</span> Tidak ditemukan pola target: $filePath <br>";
+            }
+        }
+    }
+    echo "<br><b>Selesai!</b>";
+
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
+}
+?>
