@@ -339,7 +339,7 @@ function render_login($err=''){
           },
           boxShadow:{
             soft:'0 10px 30px rgba(0,0,0,.45)',
-            card:'0 6px 20px rgba(202, 37, 235, 0.22)'
+            card:'0 6px 20px rgba(0, 0, 0, 0.22)'
           },
           borderRadius:{xl2:'18px'}
         }
