@@ -907,7 +907,7 @@ $yearNow = date('Y');
 
     html,body{height:100%}
     body{font-family:'Ubuntu',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans";}
-    .shell{min-height:100vh;background:radial-gradient(1200px 600px at 20% -10%, rgba(172, 99, 241, 0.15), transparent 60%), radial-gradient(900px 500px at 90% 0%, rgba(168,85,247,.12), transparent 60%), #000000ff; display:grid; grid-template-rows:auto 1fr auto;}
+    .shell{min-height:100vh;background:radial-gradient(1200px 600px at 20% -10%, rgba(99, 149, 241, 0.15), transparent 60%), radial-gradient(900px 500px at 90% 0%, rgba(85, 128, 247, 0.12), transparent 60%), #000000ff; display:grid; grid-template-rows:auto 1fr auto;}
     .card{background:rgba(15,23,42,.8);border:1px solid rgba(148,163,184,.15);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03);backdrop-filter:blur(8px);}
     .field{border:1px solid rgba(148,163,184,.18);border-radius:12px;padding:.5rem .75rem;width:100%;background:#0b1220;color:#e5e7eb;}
     .field:focus{outline:none;box-shadow:0 0 0 4px rgba(99, 144, 241, 0.25);border-color:#ff3d3dff}
@@ -916,12 +916,12 @@ $yearNow = date('Y');
     .btn-ghost{background:transparent;border:1px solid rgba(148,163,184,.25);color:#e5e7eb;}
     .btn-xs{padding:.25rem .5rem;font-size:.75rem;border-radius:8px}.btn-sm{padding:.35rem .6rem;font-size:.8125rem;border-radius:9px}.btnw{min-width:96px}
     .tbl thead th{position:sticky;top:0;background:#0b1220e6;backdrop-filter:blur(6px);z-index:1;color:#cbd5e1}
-    .tbl tbody tr:nth-child(even){background:rgba(184, 148, 148, 0.04)}
-    .tbl tbody tr.hoverable:hover{background:rgba(241, 99, 99, 0.22);box-shadow:inset 0 0 0 9999px rgba(99,102,241,.10)}
+    .tbl tbody tr:nth-child(even){background:rgba(148, 159, 184, 0.04)}
+    .tbl tbody tr.hoverable:hover{background:rgba(99, 137, 241, 0.22);box-shadow:inset 0 0 0 9999px rgba(99,102,241,.10)}
     .tbl tbody tr.hoverable{transition:background .15s ease}
     .ico{width:18px;height:18px;display:inline-block;vertical-align:text-bottom;color:#cbd5e1}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
-    .badge-small{font-size:11px;padding:.1rem .4rem;border-radius:999px;background:#111827;color:#c7d2fe;border:1px solid #513737ff}
+    .badge-small{font-size:11px;padding:.1rem .4rem;border-radius:999px;background:#111827;color:#c7d2fe;border:1px solid #373e51ff}
     .row-actions{display:grid;grid-template-columns:repeat(8, minmax(90px, auto));gap:.35rem;justify-items:start}
     @media (max-width:1200px){ .row-actions{grid-template-columns:repeat(3, minmax(90px, auto));} }
     .tablewrap{height:calc(100vh - 320px);overflow:auto}
