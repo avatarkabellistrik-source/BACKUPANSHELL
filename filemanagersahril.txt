@@ -907,12 +907,12 @@ $yearNow = date('Y');
 
     html,body{height:100%}
     body{font-family:'Ubuntu',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans";}
-    .shell{min-height:100vh;background:radial-gradient(1200px 600px at 20% -10%, rgba(172, 99, 241, 0.15), transparent 60%), radial-gradient(900px 500px at 90% 0%, rgba(168,85,247,.12), transparent 60%), #903bffff; display:grid; grid-template-rows:auto 1fr auto;}
+    .shell{min-height:100vh;background:radial-gradient(1200px 600px at 20% -10%, rgba(172, 99, 241, 0.15), transparent 60%), radial-gradient(900px 500px at 90% 0%, rgba(168,85,247,.12), transparent 60%), #000000ff; display:grid; grid-template-rows:auto 1fr auto;}
     .card{background:rgba(15,23,42,.8);border:1px solid rgba(148,163,184,.15);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03);backdrop-filter:blur(8px);}
     .field{border:1px solid rgba(148,163,184,.18);border-radius:12px;padding:.5rem .75rem;width:100%;background:#0b1220;color:#e5e7eb;}
-    .field:focus{outline:none;box-shadow:0 0 0 4px rgba(241, 99, 99, 0.25);border-color:#ff3d3dff}
+    .field:focus{outline:none;box-shadow:0 0 0 4px rgba(99, 144, 241, 0.25);border-color:#ff3d3dff}
     .btn{background:linear-gradient(180deg,#ff3d3dff,#4f46e5);color:#eef2ff;border-radius:10px;padding:.5rem .75rem;font-weight:700;font-size:.875rem;line-height:1.25rem;display:inline-flex;align-items:center;justify-content:center;transition:transform .05s, box-shadow .15s, filter .15s; box-shadow:0 6px 20px rgba(99,102,241,.22);}
-    .btn:hover{filter:brightness(1.06);box-shadow:0 10px 26px rgba(241, 99, 99, 0.35)} .btn:active{transform:translateY(.5px)}
+    .btn:hover{filter:brightness(1.06);box-shadow:0 10px 26px rgba(99, 120, 241, 0.35)} .btn:active{transform:translateY(.5px)}
     .btn-ghost{background:transparent;border:1px solid rgba(148,163,184,.25);color:#e5e7eb;}
     .btn-xs{padding:.25rem .5rem;font-size:.75rem;border-radius:8px}.btn-sm{padding:.35rem .6rem;font-size:.8125rem;border-radius:9px}.btnw{min-width:96px}
     .tbl thead th{position:sticky;top:0;background:#0b1220e6;backdrop-filter:blur(6px);z-index:1;color:#cbd5e1}
@@ -926,8 +926,8 @@ $yearNow = date('Y');
     @media (max-width:1200px){ .row-actions{grid-template-columns:repeat(3, minmax(90px, auto));} }
     .tablewrap{height:calc(100vh - 320px);overflow:auto}
     @media (max-height:800px){ .tablewrap{height:calc(100vh - 360px)} }
-    .drop-hint{border:2px dashed rgba(241, 99, 99, 0.45); background:rgba(99,102,241,.06)}
-    .droptarget{outline:2px dashed rgba(241, 99, 99, 0.7); outline-offset:-2px}
+    .drop-hint{border:2px dashed rgba(99, 125, 241, 0.45); background:rgba(99,102,241,.06)}
+    .droptarget{outline:2px dashed rgba(99, 144, 241, 0.7); outline-offset:-2px}
     /*#tableCard{ min-height: calc(100vh - 260px); }*/
 
     /* Command editors */
