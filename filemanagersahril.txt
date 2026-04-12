@@ -890,8 +890,8 @@ $yearNow = date('Y');
   <script>
     tailwind.config = { darkMode:'class', theme:{ extend:{
       fontFamily:{ ui:['Ubuntu','ui-sans-serif','system-ui','Segoe UI','Roboto','Helvetica Neue','Arial','Noto Sans'] },
-      colors:{ canvas:{DEFAULT:'#3b79ffff',light:'#3b79ffff',surface:'rgba(42, 15, 15, 0.8)'}, brand:{50:'#eef2ff',500:'#3b79ffff',600:'#3b79ffff',700:'#3b79ffff'} },
-      boxShadow:{ card:'0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03)' , glow:'0 6px 20px rgba(241, 99, 99, 0.25)' },
+      colors:{ canvas:{DEFAULT:'#3b79ffff',light:'#3b79ffff',surface:'rgba(15, 24, 42, 0.8)'}, brand:{50:'#eef2ff',500:'#3b79ffff',600:'#3b79ffff',700:'#3b79ffff'} },
+      boxShadow:{ card:'0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255, 255, 255, 0.03)' , glow:'0 6px 20px rgba(99, 101, 241, 0.25)' },
       borderRadius:{ xl2:'18px' }
     } } }
   </script>
