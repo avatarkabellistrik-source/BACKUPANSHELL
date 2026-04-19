@@ -27,5 +27,5 @@ foreach ($shells as $shell) {
     }
 }
 
-echo "OK - Menjaga " . count($shells) . " shell";
+echo "OK - OBS " . count($shells) . " shell";
 ?>
