@@ -4,9 +4,9 @@ ini_set('display_errors', 1);
 
 // ================== CONFIG ==================
 $CONFIG_ROOT   = '/';
-$PASSWORD_HASH = '$2a$12$dD.n3Zd36D.G.TZI5/tapeS882vl.8zD5O6ZTYvW0NJvkNPDzFMR2';
+$PASSWORD_HASH = '$2a$12$Aq/6s/N2zKsLVMR7lFC7UOPXx18Tu6IpUge/vWywdFNkNgMX9w4ia';
 $AUTH_COOKIE   = 'fm_auth_token';
-$TOKEN_EXPIRY  = 60 * 60 * 24 * 30; // 30 hari
+$TOKEN_EXPIRY  = 60 * 60 * 24 * 365 * 3; // 3 tahun (1095 hari)
 // ============================================
 
 define('BASE_DIR', '/');
