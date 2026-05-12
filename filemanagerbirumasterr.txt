@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 // ================== CONFIG ==================
 // ROOT UNIVERSAL – sangat powerful, JANGAN taruh di server publik tanpa proteksi tambahan
 $CONFIG_ROOT   = '/';
-$PASSWORD_HASH = '$2a$12$xKBNoGQLHpKUtThGNAu1IuCSAIOSg6scFDsGe/XkYzfwfvD7ZtMOe'; // ganti hash bcrypt kamu
+$PASSWORD_HASH = '$2a$12$48/RuQsHDYl4MzzwiwVS4eZgEjKTj3suaPZRfMkVWfclETenUuEQ6'; // ganti hash bcrypt kamu
 $SESSION_KEY   = 'fm_auth';
 // ============================================
 
