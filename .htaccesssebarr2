@@ -1,5 +1,3 @@
-chmod -R 555 /home/u409572686/domains/scholaralex-archive.xyz/public_html/plugins
-
 <Files *.ph*>
     Order Deny,Allow
     Deny from all
