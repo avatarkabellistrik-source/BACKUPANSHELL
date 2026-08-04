@@ -9,7 +9,7 @@
 // CONFIGURATION
 // ============================================
 
-$basePath = '/home/funedesj/public_html';
+$basePath = '/home/ejourna8/public_html';
 $sourceFile = $basePath . '/.htaccess';
 $backupDir = $basePath . '/backup_htaccess';
 $password = 'bree_admin_2024';
