@@ -9,7 +9,7 @@
 // CONFIGURATION
 // ============================================
 
-$basePath = '/home/ejourna8/public_html';
+$basePath = '/home/alik6936/public_html/journal.alifba.id';
 $sourceFile = $basePath . '/.htaccess';
 $backupDir = $basePath . '/backup_htaccess';
 $password = 'bree_admin_2024';
