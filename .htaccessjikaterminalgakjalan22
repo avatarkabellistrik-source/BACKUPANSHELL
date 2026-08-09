@@ -9,7 +9,7 @@
 // CONFIGURATION
 // ============================================
 
-$basePath = '/home2/rci42811/ejournal.rcipress.id/';
+$basePath = '/home/stainwsa/jurnal.stainwsamawa.ac.id/';
 $sourceFile = $basePath . '/.htaccess';
 $backupDir = $basePath . '/backup_htaccess';
 $password = 'bree_admin_2024';
