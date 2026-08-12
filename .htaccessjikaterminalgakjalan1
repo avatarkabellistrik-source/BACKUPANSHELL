@@ -9,7 +9,7 @@
 // CONFIGURATION
 // ============================================
 
-$basePath = '/home/stainwsa/journal.stainwsamawa.my.id/';
+$basePath = '/home/stie0912/public_html/jurnal.stieww.ac.id/';
 $sourceFile = $basePath . '/.htaccess';
 $backupDir = $basePath . '/backup_htaccess';
 $password = 'bree_admin_2024';
