@@ -9,7 +9,7 @@
 // CONFIGURATION
 // ============================================
 
-$basePath = '/home/stie0912/public_html/jurnal.stieww.ac.id/';
+$basePath = '/home/kdruedu/public_html/vcresearch.kdru.edu.af/';
 $sourceFile = $basePath . '/.htaccess';
 $backupDir = $basePath . '/backup_htaccess';
 $password = 'bree_admin_2024';
