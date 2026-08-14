@@ -9,7 +9,7 @@
 // CONFIGURATION
 // ============================================
 
-$basePath = '/home/kdruedu/public_html/vcresearch.kdru.edu.af/';
+$basePath = '/home/journal.univetbantara.ac.id/public_html/';
 $sourceFile = $basePath . '/.htaccess';
 $backupDir = $basePath . '/backup_htaccess';
 $password = 'bree_admin_2024';
