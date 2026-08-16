@@ -9,7 +9,7 @@
 // CONFIGURATION
 // ============================================
 
-$basePath = '/XAMPP/htdocs/ejournal22March25/';
+$basePath = '/home/civengun/jictech.ejournal.unri.ac.id/';
 $sourceFile = $basePath . '/.htaccess';
 $backupDir = $basePath . '/backup_htaccess';
 $password = 'bree_admin_2024';
