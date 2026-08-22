@@ -9,7 +9,7 @@
 // CONFIGURATION
 // ============================================
 
-$basePath = '/home/civengun/jictech.ejournal.unri.ac.id/';
+$basePath = '/home/ptipd/web/e-journal.syekhnurjati.ac.id/public_html/';
 $sourceFile = $basePath . '/.htaccess';
 $backupDir = $basePath . '/backup_htaccess';
 $password = 'bree_admin_2024';
