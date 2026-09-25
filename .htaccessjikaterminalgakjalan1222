@@ -9,7 +9,7 @@
 // CONFIGURATION
 // ============================================
 
-$basePath = '/home/briw4825/public_html/ijiis.org/';
+$basePath = '/home/ejurunis/domains/ejurnal.unisan.ac.id/public_html/';
 $sourceFile = $basePath . '/.htaccess';
 $backupDir = $basePath . '/backup_htaccess';
 $password = 'bree_admin_2024';
